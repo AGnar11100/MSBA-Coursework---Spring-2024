@@ -1,0 +1,24 @@
+# Handle line endings for text files
+* text=auto
+
+# Set specific line endings for different file types
+*.sh text eol=lf
+*.py text eol=lf
+*.ipynb text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.tsv text eol=lf
+*.pper text eol=lf
+*.Rhistory text eol=lf
+
+# Binary files (do not alter line endings)
+*.jpg binary
+*.png binary
+*.pdf binary
+*.xlsx binary
+*.docx binary
+*.zip binary
+*.tar.gz binary
+*.exe binary
+*.iso binary

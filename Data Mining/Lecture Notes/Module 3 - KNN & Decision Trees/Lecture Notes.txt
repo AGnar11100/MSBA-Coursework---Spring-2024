@@ -1,0 +1,58 @@
+K Nearest Neighbors 
+	Used for classification and numerical prediction
+	Nonparametric - no assumptions about relationship betweeen predictors and outcome
+	Does not involve estimation of parameters in an assumed function form
+	
+	Characteristics
+		Data Driven
+		Straight forward
+		Highly automated
+
+	To classify or predict a new record, method relies on finding similar or nearest to the new record neighbors
+	that have values close to the new record
+	
+	Euclidean Distance - predictor variables are first normalized (standardized) to put them on comparable scale otherwise
+	metrics will likely dominate whats produced. 
+
+	Low K: capture local structure in data (but also noise, overfit)
+	High K: more smoothing, less noise (but may miss local structure)
+	K=n: classify all records according to majority class
+		
+	How to select best K?
+		Develop KNN classifier for various values of k in training partition
+		Use validation partition, identify accuracy for each KNN classifier
+		Best k will be the smallest k with the best accuracy 
+	
+	The range of K when trying to find the best K for a dataset is the same as the size of number of values
+	in the training data.
+
+	Pros
+		Simple
+		No parameters
+		Effective at capturing interactions amount varilables without having a statisitical model
+		Performs well with a lot of training data
+	Cons
+		Required size of a training data set increases exponentially with number of predictors because
+		expected distance to the nearest neighbor increases with p
+		In a large training set, it takes a long time to find distances to all the neighbors and then
+		identify the nearest ones. 
+	Curse of dimensionality
+		combat by reducing dimensions of predictors or computational shortcuts that settle for almost nearest neighbor.
+
+
+Classification and Regression Trees
+	For both classification and prediction
+	Good for interpretation for ppl without ML experience
+	Goal: classify or predict an outcome based on a set of predictors
+	Output is a set of rules represented by tree diagrams
+	
+	Recursive Partitioning - repeatedly split the records into two subsets so as to achieve maximum homogeneity within the each
+	of the new subsets.
+		
+	Stopping tree growth - a fully grown tree is too complex and will oversit so we much simplify the tree by pruning peripheral
+	branches to avoid overfitting. 
+
+	
+		
+	
+	

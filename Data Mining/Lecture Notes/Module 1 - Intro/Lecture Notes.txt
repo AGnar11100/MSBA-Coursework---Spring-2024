@@ -1,0 +1,98 @@
+Data Mining refers to advanced business analytics methods of predictive analytics that go beyond counts, descriptive 
+analytics, reporting, and methods based on business rules. Included both stats and ML methods that inform
+decision making, often done in an automated fashion
+
+Prediction is typically an important component
+	Rather than what is the relationship btwn advertising and sales, we might be more intrested in what specific advertisement 
+	or product recommendation should be shown to a given shopper.
+
+	Maybe interested in clustering customers into different categories that receive different marketing treatment then assigning
+	each new prospect to one of these categories.
+
+DM stands at the convergence of the fields of stats and ML
+Statistics include a variety of techniques for exploring and building models like linear regression, PCA, and discriminant analysis.
+
+Main difference btwn Stats and DM
+	Stats focuses on inference from a sample to the population regarding the population mean or pop std
+	The main idea of DM is on predicting individual records
+	The core tenets of classicial stats DO NOT apply in DM apps where both data and computing power are available
+	DM works with large datas
+Data mining is statistics at scale and speed!
+
+DM utilizes machine learning that applies various algos that learn directly from data, especially local data (like clusters), often in
+layered and iterative fashion.
+	Example ML methods: classification trees, NNs, cluster analysis
+
+In constrast, stats models refer to methods that apply global structure to the data.
+	Example: Linear regression, where a record would be treated by linear regression in accord with an overall linear equation that
+	applies to all the historical records.
+	Contrary to that, in the classification tree method, that record will be classified in accord with the values of a small
+	number of nerby records.
+
+Many practioners, particularly those from the IT and CS communities, use ML to fere to all methods used in DM.
+
+Classification
+	most basic form of data analysis
+	goal is to predict categortical target (outcome) variable
+	Ex: purchase/no purchase, etc etc
+
+Prediction
+	Goal is to predict the value of a numeric variable
+	Ex: amount of purchase
+
+Association rules and collaboritive filtering
+	Association rules (affinity rules) identify connections amoung groups of items in an independent event or tranaction
+		Primary purpose is to determine which of the items are commonly sold together
+		Recc Systems - Our record should you bought X, you may also like Y
+
+	Collaberative filtering is popular in online recommendation systems like Amazon and Netflix, to generate, based on individual
+	user' preferences, rules general to an entire populations, "what goes with what"
+`		Based on the notions of identifying relevent items (filtering) for a specific user from a very large set of items by considering
+		preferences of many users (collaboration)
+
+Predictive Analytics
+	Combination of classification, prediction, and to some extent, association rules and collaberative filtering consistutes
+	predictive analytics
+	According to some sources, can also include clustering
+
+Data reduction and dimension reductions
+	Distillation of complex/large data into simpler/small data, eg sampling.
+	Reducing the number of variables/columns, eg PCA
+	Reducing the number of records/rows, eg clustering
+
+Data exploration and visualization
+	Datasets are typically large, complex and messy
+	Need to review the data to help refine the task
+	Data exploration uses techniques of reduction and visualization
+	Visualization includes graphs and plots of data, eg histograms, boxplots, bar chars, scatterplots
+	Visualization is especially useful to examine relationships between pairs of variables
+
+Supervised Learning: predict a single target variable
+	Classification and Predictions
+
+Unsupervised Learning: segment data into meaningful segments; detect patterns
+	Association rules, clustering, text mining, data reduction, exploration and visualization
+
+These are sometimes used in conjunction
+	Separate loan applications into several risk-lvel groups (unsupervised) and then for each group
+	identify loan default propensity (supervised)
+
+Steps in Data Mining
+1) Develop understanding of purpose of DM project
+2) Obtain data for analysis (or random sampling)
+3) Explore, clean, preprocess
+4) Reduce the data dimensions, if necessary
+5) Determine DM task(s) (prediction, classification, clustering, etc.)
+6) Partition data (for supervised tasks)
+7) Choose the DM technique(s)/model(s) eg regression, decision trees, NNs, etc
+8) Use selected techniques and associated algos to perform the tasks (iterative processes using multiple variants, i.e. different
+variables, settings, and validation performance
+9) Interpret the results of techniques/modes and assess the techniques - compare them and select the best one
+10) Deploy the best technique (model) into the operational system
+
+
+
+
+
+
+

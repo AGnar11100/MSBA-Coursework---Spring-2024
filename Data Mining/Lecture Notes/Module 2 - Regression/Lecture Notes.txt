@@ -1,0 +1,121 @@
+Multiple Linear Regression is one of the most popular explanator and prediction models used in predictive analytics.
+It is used to fit a relationship btwn a quantitative outcome variable y and the response or predicted variable and
+a set of independetn variables. 
+
+y = B_0 + sum(B_1*X_1 .. B_N*X_N) + noise/unexplained error
+
+Applicable in the following settings
+	Predict real estate price based on various factors
+	Predicting sales from cross selling of products from historical info, advertising, promiotions and discounts.
+	Predicting staffing requirements based on historical info
+
+Explantory Modeling
+	Classic statistical analysis model
+	Goal: explain relationship between predictor and outcome to identify the average relationships in population
+	Objective: fit the data closely to understand the contribution of explanatory variables to the model. 
+	Performance measures: R-squared, p-values, F-ratio, residual analysis
+
+Predictive Modeling
+	Classic data mining context
+	Goal: predict outcome value in data where we have predictor values but not outcome values
+	Objective: fit the data into a predictive model that optimizes predictive accuracy and explaining how predictors
+	play a role in the prediction.
+	Train model on training data and assess performance on validation data
+	Performance measures: R-squared, RMSE, MAE, MAPE
+
+Estimating Regression Equation and Prediction - y = B_0 + sum(B_1*X_1 .. B_N*X_N)
+	
+	Ordinary Least Squares (OLS) method is used to estimate the coeffs of the regression
+		This method finds such values for Betas that minimize the sum of squared deviations (err) between the
+		actual values and predicted values of the outcome variable. 
+
+	Assumptions
+		Variable form is linear
+		Data records are independent of each other
+		The noise follows a normal distribution
+		Variability in outcome y values for a given set of predictors is the same regardless of the value of 
+		predictors (homoscedasticity)
+
+Preprocessing and Partitioning - see housing data ipynb
+
+Predicting Performance Measures
+	
+	R-squared - coeff of determination [0, 1]
+		Proportion of variation of the outcome variable explained by variations of predictors.
+		Higher values are desired but measure does not count for the number of predictors.
+
+	Adjusted R-squared 
+		Counts for the number of predictors by using a penalty on the number of predictors.
+		
+	AIC - Akaike Information Criterion
+		Info-based criterion that assess goodness of fit
+		This value can be used to compare various models for the same dataset to determine the best fitting model.
+	
+	BIC - Bayesian Information Criterion
+		Similar to AIC.
+		Measures information lost by fitting a given model
+		Smaller BIC is desired
+
+Common Accuracy Performance Measures
+
+	Error - actual-predicted
+    Positive residual: The observed value is higher than the predicted value, suggesting that the model underestimated the actual value.
+    Negative residual: The observed value is lower than the predicted value, indicating that the model overestimated the actual value.
+	Mean Error - provides an indication of whether the predictions are over or under predicting. 
+	RMSE - same units as actual values and is sensitive to outliers
+	MAE - give the magnitude of the average absolute error
+	MAPE - gives an absolute percentage score of how prediction deviates from actual values; useful for comparing
+	performance across predictions that have different scales
+	MPE - similar to MAPE but w/o absolute value of the ratio; indicates the percentage of overall under/over predicting
+
+Reducing the Number of Predictors
+	
+	A frequent problem in DM with multiple linear regression:
+		Using a regression equation when we have many variables to choose from
+	
+	Reasons for exercising caution before throwing all possible variables
+		May be expensive or not feasible to collect a full complement of predictors for future predictions
+		May be able to measure fewer predictors more accurately
+		More predictors the higher chance of missing values in data
+		Parsimony is an important property of good models: to obtain more insights into the influence of 
+		predictors in models with few of these predictors. 
+		Estimates of regression coeffs are likely to be unstaable due to multicollinearity in models with many
+		variables. 
+
+	Practical reasons for predictor elimination
+		Irrelevant predictor
+		High correlation with other predictors
+		Many missing values in columns 
+		Expensive of collecting predictor info in the future 
+		Inaccuracy in predictor values 
+
+	Solution: set of predictors should be reduced to a sensible subset that reflects the problem at hand. 
+
+Selecting Subsets of Predictors
+	Goal: Find parsimonious/simple model 
+	
+Variable selection algos
+	Exhaustive Search - identifies the best subset by fitting regression with all possible combinations
+		Challenges: 1) underfitting when selection excludes important parameters 2) overfitting when noise
+		Selection criteria: highest R-squared and lowest AIC
+		Disadvantages: 1) computationally expensive 2) no out-of-box technical support
+
+	Partial selection - search through partial subset of models using algos that consider variables one at a time
+		Backward Elimination
+			Starts with all predictors and then one by one eliminates the least useful predictor in terms
+			of contribution to reduction of AIC score and stops when no further reduction can be performed.
+			Cons: time consuming and unstable
+
+		Forward Selection
+			Starts with no predictors, adds a predictor with largest contribution to reducing AIC. Sort of a 
+			rank selection.
+			Cons: will miss pairs or groups of predictors that perform very well together but perform poorly
+			as a single predictor. 
+
+		Stepwise
+			Combines elements of both forward and backward elimination. At each step, considers dropping predictors
+			that are not reducing AIC score.
+
+	Overfitting - compare train and validation eval metrics, if validation error doesnt exceed training error then generalization is occuring. 
+
+

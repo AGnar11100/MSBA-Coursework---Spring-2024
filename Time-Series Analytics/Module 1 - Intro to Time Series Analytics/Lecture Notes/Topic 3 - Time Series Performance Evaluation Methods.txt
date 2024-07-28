@@ -1,0 +1,129 @@
+Step 4: Partition Time Series 
+	Important preliminary step before applying any forecasting method
+	Comes from the need to be able to test how well any selected model performs with the new data not included in the model
+	dev step. Divide time series data into two partions: test and validation. Develop a forecasting model based on training
+	data, and test/val model performance using the validation data.
+
+	The main reasons for partitioning is overfitting. It means that a forecasting model is not only fitting systematic components
+	of the data but also the noise. Overfitted model is likely to perform poorly on new data.
+
+Partitioning of cross-sectional data
+	Employs two or three data partitions: training set, validation set, and sometimes, test set.
+	Random selection of data records into training, validations and test sets.
+	Training set is the largest set of partitions and is used to develop various models which are assessed by validation and test.
+
+Time series (temporal) partitioning
+	The times series is also partitioned into two sets: training period and validation period.
+	Nonrandom selection of partition periods
+		Earlier period is designated as the training period, larger partition
+		Later period is designated as the validation period, the smallerr partition
+		The proportion of data in training and validation periods can vary depending on time period unit, size of dataset,
+		time series patterns.
+
+Length of Validation Period and Recombine Partitions for Forecasting
+	Length of Validation period depends on
+		Data Frequency and Forecast Horizon
+			If the data needs to be forecasted for next year, choose at least one year of validation 
+		Seasonality
+			For monthly or quarterly seasonality, consider validation period of at least 2 years
+		Length of Series
+			The smaller the time series length the less data will go into validation period
+
+	Recombine partitions for forecasting
+		Before attempting to forecast future values of the series, the training and validation periods must be recombined
+		into one time series, and the chosen model needs to be rerun on the complete data
+			Validation period, the most recent one, contains the most valuable info for the future period forecasting
+			thus needs to be included for model development
+		
+			With more data for the model development, the forecasting model may be estimated more accurately. 
+
+
+Step 6: Applying Forecasting Method(s)
+	Different methods perform differently depending on the nature of data and forecasting requirements
+	Simple approach like naive forecast should be considered as a baseline for performance comparison of more sophisticated methods
+	
+Forecasting methods can be roughly divided into model-based and data-driven methods
+
+Data driven methods are data dependent and learn patterns from data
+	Advantageous when data structure changes over time and require less user input in model development
+		Naive forecasts
+		Moving average
+		Exponential smoothing
+		Neural nets
+	Manual Forecasting
+		One-time forecasting
+		In-house expertise
+		Small number of series to forecast
+		Model-based methods
+	Automated forecasting 
+		Ongoing forecasting
+		No in-house expertise
+		Many series to forecast
+		Data Driven methods
+
+Model-based methods apply statistical, mathematical or other scientific models to forecast time series, especially advantageous
+for time series with small number of records
+		Simple and multiple linear and non-linear regression
+		autoregressive models
+		ARIMA
+		Logistic Regression
+		Econometic models
+
+Combine multiple forecasting methods to improve predictive performance
+	Two-level (multlevel) methods where the first method uses the original time series to predict future and the second method uses
+	forecast errors from the first method to generate forecast for errors and then combine two forecasts together.
+
+	Ensembles
+		Multiple methods applied to the same time series, each generates a separate forecast
+		The resulting forecasts are avgd in some way to produce the final forecast
+		Can be weighted avg where each forecast has a specific weight proportional to the method performance
+		Example: ensembles played a major role in Netflic competition to develop the most accurate forecast of movie preference
+		by Netflix customers
+
+	Advantages -  more robust forecasts and higher precision
+	Disadvantages - increased cost and time consuming, more external consulting expertise, and requires predetermined rules for combining forecasts.
+
+
+Naive Forecast is a simple forecasting method that uses the most recent value of the time series
+	If the actual value of time series in period t is y_t, the naive k-step ahead forecast F_t+k = y_t
+	Seasonal naive forecast for a seasonal time series is the value of the most recent identical season.
+		For a series with M seasons, seasonal naive forecast for k-steps ahead F_t+k = y_t-M+k
+		Example: with monthly time series the naive forecast for June 2019 will be equal to the actual value of June 2018
+	Naive forecast usage
+		Being simple and easy to understand can sometime be actually used to achieve useful accuracy levels
+		Can be used as a baseline to compare it with some other more advanced forecasting methods
+
+
+Step 7: Evaluate & Compare Performance 
+	Forecast accuracy refers to how close forecasts come to actual data
+	Accuracy is usually measured in forecasting by the value of its adverse charactistic--forecast error.
+	Forecast error or residual is the difference between actual and forecased values in the same period
+	The smaller the error the more accurate.
+	Performance measures are typically based on validation period data.
+
+Additional Accuracy Performance Measures
+	Mean percentage error (MPE) which is similar to MAPE without the absolute value of the ratio; indicates percentages of
+	over-or-under predicting.
+	Mean absolute scaled error (MASE) is scaled version of MAE which identifies the ratio of validation MAE vs. average naive forecast error
+		If MASE is < 1 then forecasting model has a lower average error than naive forecast
+		If MASE >= 1 then forecasting model has the same or higher average error than naive forecast
+		MASE = Validation MAE/Training MAE of Naive Forecasts
+
+	ACF1 is autocoreelation of error at lag 1
+	Theil's U statistic is a relative accuracy measure that compares the forecasted results with the results of forecasting with
+	minimal historical data.
+		U < 1 model is better than guessing
+		U = 1 model is as good as guessing 
+		U > 1 model is worse than guessing
+	
+Measure Forecast Uncertainty
+	Prediction interval is a forecast range for a forecasted period, which has an uncertainty level attached to it
+		Based on a probability that the forecasted values will be in the range [a,b]
+		More informative than a single forecast number
+		Tell about uncertainty associated with the forecast similar to MAPE but without absolute value of the ratio; indicates
+		the percentage of over-or-under predicting.
+	With normally distributed errors, prediction interval for forecast F_t
+			F_t +- Zsigma
+		where sigma is estimated std deviation of forecast errors
+	For non-normal errors, transform errors to normal
+	

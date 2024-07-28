@@ -1,0 +1,94 @@
+Step 2: Data Collection
+
+Data Quality 
+	Sample size is relatively small, typically no more than a few hundred values in a series
+	With multiple sources, collection may be done from different depeartments, so compare and
+	choose the best data to apply.
+	Additional data may be collected in the future from the same source.
+	External data may be also required to do a more accurate forecasting
+Temperal frequency
+	Consider frequency of time series is the same as the frequency of the required forecast
+		If the goal to forecast is next day enegry usage in a building, then minute-by-minute or hourly
+		is less useful than daily aggregates of historical data.
+		High frequency data may have more noise, while aggregated data will reduce it
+	Sometimes: we aggregate data, aggregate model forecasts and then disaggregate the forecasting results
+Series Granularity
+	Refers to the coverage of the data
+		Geographical area, population, time of operations, etc.
+		Depending on the forecast goal, series granularity may require different depth eg forecasting
+		general population growth vs. forecast of population of various age groups, states, regions, etc.
+	Level of granularity needs to be aligned with the forecasting goal
+	Exploring different aggregation and data slicing levels are often needed to obtain appropriate time series
+Domain Expertise
+	Is needed to identify which data to employ (daily vs. hourly, how far back, and from what source, etc_
+	Help to evaluate practical implications of forecasting results
+	Requires communication and coordination between business data analysts that perform forecasting and domain experts
+
+
+Step 3: Explore & Visualize Series
+
+Explore time series step is used to do preliminary time series analysis of the data
+In particular
+	Identify data patterns (components) of the historical time series data
+	Use autocorrelation to investigate various data patterns
+
+Time Series Components
+	Systematic part components
+		Level (stationary) describes the average value of the series
+		Trend is the upward or downward change in the series from one period to the next
+		Seasonality is a short-term cyclical behavior observed several times in a time series
+	Non-systematic part component
+		Noise (randomness) - random variations resulting from measurement error or other causes not accounted for
+	Time Series components are commonly considered either additive or multiplicative
+		Additive: Y_t = Level + trend + Seasonality + Noise
+		Multiplicative components: Y_t = Level * trend * Seasonality * Noise
+	While not all time series have trend and/or seasonality, all series have a level
+	Forecasting methods attempt to isolate the systematic part and quantify noise 
+		Systematic part is used to generate point forecasts
+		Noise helps asses the uncertainty associated with point forecasts
+
+Autocorrelation represents the correlation between a random variable itself and the same variabled lagged one or more
+periods.
+
+Autocorrelation coefficients is a measure of autocorrelation between a variable itself and the same variabled lagged k periods.
+
+If a time series is random, the autocorrelations for any lag are close to zero. 
+	Successive values of a time series are note related to each other. 
+
+Autocorrelation function identifies and plots multiple autocorrelation coeffs for various lags of time series data
+	It also calculates and plots interval (horizontal lines) to identify significant autocorrelation
+
+Correlogram is a plot of autocorrelation for various lags and can be used to analyze the autocorrelation coeffs for
+different time lags and answers the following questions:
+	Does the time series data have...
+		level (stationary) component?
+		trend component?
+		seasonal component?
+
+Analyzing Patterns with Autocorrelation
+	Series with trends
+		Positive autocorrelation coeff are significantly greater from zero for the first lag or first several
+		periods of lag and then may gradually drop down, sometimes to zero or negative values
+	Series with seasonality
+		Autocorrelation coeffs are significant at the appropriate time lag:
+			lag 4 for quarterly data, lag 12 for monthly data
+	Series with level (stationary) pattern
+		Autocorrelation coeffs decline fairly rapidly, generally after the second-to-fourth-time lag
+
+Visualize series step is used as an effective initial step for characterizing the nature of time series
+May detect potential issues with the data such as:
+	Extreme values
+	Unequal spacing
+	Missing values
+Time plot is the most basic but not very informative 
+
+
+Step 4: Preprocess Data
+Used to detect potential issues and challenges with data
+	Extreme values
+	Data entry errors
+	Missing values
+	Unequal spacing 
+	Irrelevant periods
+	Time span (how far back?)
+May require data cleaning to remove times series issues.

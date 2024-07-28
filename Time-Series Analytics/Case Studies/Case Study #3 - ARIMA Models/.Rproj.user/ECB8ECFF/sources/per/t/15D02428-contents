@@ -1,0 +1,212 @@
+install.packages("forecast")
+library(forecast)
+library(zoo)
+revenue.data <- read.csv('673_case3.csv')
+revenue.data
+
+# DATASET PREP
+revenue.ts <- ts(revenue.data$Revenue, start=c(2005, 1), end=c(2023, 4), frequency = 4)
+revenue.ts
+
+nValid <- 16
+nTrain <- length(revenue.ts) - nValid
+
+train.ts <- window(revenue.ts, start = c(2005, 1), end = c(2005, nTrain))
+valid.ts <- window(revenue.ts, start = c(2005, nTrain + 1), end = c(2005, nTrain + nValid))
+
+
+# 1. Identify time series predictability.
+# a. Using the AR(1) model for the historical data, Provide and explain the AR(1) model
+# summary in your report. Explain if the Walmart revenue is predictable.
+walmart.revenue.ar1 <- Arima(revenue.ts, order = c(1,0,0))
+summary(walmart.revenue.ar1)
+
+ar1 <- 0.9449
+s.e. <- 0.0444
+null_mean <- 1
+alpha <- 0.05
+z.stat <- (ar1 - null_mean)/s.e.
+z.stat
+p.value <- pnorm(z.stat)
+p.value
+if (p.value<alpha) {
+  "Reject null hypothesis"
+} else {
+  "Accept null hypothesis"
+}
+
+
+
+
+# b. Using the first differencing (lag1) of the historical data and Acf() function, provide in the 
+# report the autocorrelation plot of the first differencing (lag1) with the maximum of 8 lags 
+# and explain if Walmart revenue is predictable.
+
+diff.revenue.ts <- diff(revenue.ts, lag = 1)
+diff.revenue.ts
+# Use Acf() function to identify autocorrealtion for first differenced 
+# Walmart Revenue, and plot autocorrelation for different lags 
+# (up to maximum of 12).
+Acf(diff.revenue.ts, lag.max = 8, 
+    main = "Autocorrelation for Differenced Walmart Revenue Data")
+
+
+
+
+
+# 2. Apply the two-level forecast with regression model and AR model for residuals.
+# a. For the training data set, use the tslm() function to develop a regression model with linear
+# trend and seasonality. Forecast Walmart’s revenue in the validation period with the 
+# forecast() function (use the associated R code from case #2). No explanation is required in your report.
+train.lin.season <- tslm(train.ts ~ trend + season)
+summary(train.lin.season)
+train.lin.season.pred <- forecast(train.lin.season, h = nValid, level = 0)
+train.lin.season.pred
+
+
+# b. Identify the regression model’s residuals for the training period and use the Acf() function 
+# with a maximum of 8 lags to identify autocorrelation for these residuals. Provide the 
+# autocorrelation plot in your report and explain if it would be a good idea to add to your 
+# forecast an AR model for residuals. 
+Acf(train.lin.season$residuals, lag.max = 8, 
+    main = "Autocorrelation with a maximum of 8 lags for Walmart Revenue Data training period")
+
+
+
+# c. Develop an AR(1) model for the regression residuals, present and explain the model and 
+# its equation in your report. Use the Acf() function for the residuals of the AR(1) model 
+# (residuals of residuals), present the autocorrelation chart, and explain it in your report.
+res.ar1 <- Arima(train.lin.season$residuals, order = c(1,0,0))
+summary(res.ar1)
+Acf(res.ar1$residuals, lag.max = 8, 
+    main = "Autocorrelation of AR(1) for \"residuals of residuals\" model")
+
+
+
+# d. Create a two-level forecasting model (regression model with linear trend and seasonality + AR(1) model for residuals) for the validation period. 
+# Show in your report a table with the validation data, regression forecast for the validation data, AR(1) forecast for the validation data, and combined 
+# forecast for the validation period.
+res.ar1.pred <- forecast(res.ar1, h = nValid, level = 0)
+
+valid.two.level.pred <- train.lin.season.pred$mean + res.ar1.pred$mean
+valid.df <- round(data.frame(valid.ts, train.lin.season.pred$mean, 
+                             res.ar1.pred$mean, valid.two.level.pred),3)
+names(valid.df) <- c("Revenue", "Reg.Forecast", 
+                     "AR(1)Forecast", "Combined.Forecast")
+valid.df
+
+
+
+# e. Develop a two-level forecast (regression model with linear trend and seasonality and AR(1) model for residuals) for the entire data set. Provide in your report the 
+# autocorrelation chart for the AR(1) model’s residuals and explain it. Also, provide a data table with the models’ forecasts for Walmart 
+# revenue in Q1-Q4 of 2024-2025 (regression model, AR(1) for residuals, and two-level combined forecast).
+lin.season <- tslm(revenue.ts ~ trend + season)
+lin.season.pred <- forecast(lin.season, h = 8, level = 0)
+residual.ar1 <- Arima(lin.season$residuals, order = c(1,0,0))
+residual.ar1.pred <- forecast(residual.ar1, h = 8, level = 0)
+
+Acf(residual.ar1$residuals, lag.max = 8, 
+    main = "Autocorrelation of AR(1) residuals")
+
+
+# Identify forecast for the future 8 quarters
+lin.season.ar1.pred <- lin.season.pred$mean + residual.ar1.pred$mean
+lin.season.ar1.pred
+
+table.df <- round(data.frame(lin.season.pred$mean, 
+                             residual.ar1.pred$mean, lin.season.ar1.pred),3)
+names(table.df) <- c("Reg.Forecast", "AR(1)Forecast","Combined.Forecast")
+table.df
+
+
+
+
+# 3. Use ARIMA Model and Compare Various Methods.
+# a. Use Arima() function to fit ARIMA(1,1,1)(1,1,1) model for the training data set. Insert in 
+# your report the summary of this ARIMA model, present and briefly explain the ARIMA 
+# model and its equation in your report. Using this model, forecast revenue for the 
+# validation period and present it in your report.
+train.arima.seas <- Arima(train.ts, order = c(1,1,1), seasonal = c(1,1,1)) 
+summary(train.arima.seas)
+train.arima.seas.pred <- forecast(train.arima.seas, h = nValid, level = 0)
+train.arima.seas.pred
+
+
+
+
+# b. Use the auto.arima() function to develop an ARIMA model using the training data set. 
+# Insert in your report the summary of this ARIMA model, present and explain the ARIMA
+# model and its equation in your report. Use this model to forecast revenue in the validation 
+# period and present this forecast in your report. 
+train.auto.arima <- auto.arima(train.ts)
+summary(train.auto.arima)
+train.auto.arima.pred <- forecast(train.auto.arima, h = nValid, level = 0)
+train.auto.arima.pred
+
+
+
+
+# c. Apply the accuracy() function to compare performance measures of the two ARIMA 
+# models in 3a and 3b. Present the accuracy measures in your report, compare them and 
+# identify, using MAPE and RMSE, the best ARIMA model to apply. 
+arima_seas_MAPE <- round(accuracy(train.arima.seas.pred$mean, valid.ts)[, "MAPE"], 3)
+arima_seas_RMSE <- round(accuracy(train.arima.seas.pred$mean, valid.ts)[, "RMSE"], 3)
+auto_arima_MAPE <- round(accuracy(train.auto.arima.pred$mean, valid.ts)[, "MAPE"], 3)
+auto_arima_RMSE <- round(accuracy(train.auto.arima.pred$mean, valid.ts)[, "RMSE"], 3)
+
+results_df <- data.frame(
+  Model = c("ARIMA Seasonal", "Auto ARIMA"),
+  MAPE = c(arima_seas_MAPE, auto_arima_MAPE),
+  RMSE = c(arima_seas_RMSE, auto_arima_RMSE)
+)
+print(results_df)
+
+
+
+
+# d. Use two ARIMA models from 3a and 3b for the entire data set. Present models’ 
+# summaries in your report. Use these ARIMA models to forecast Walmart revenue in Q1-
+# Q4 of 2024-2025 and present these forecasts in your report.
+tot.arima.seas <- Arima(revenue.ts, order = c(1,1,1), seasonal = c(1,1,1)) 
+tot.auto.arima <- auto.arima(revenue.ts)
+tot.arima.seas.pred <- forecast(tot.arima.seas, h = 8, level = 0)
+tot.auto.arima.pred <- forecast(tot.auto.arima, h = 8, level = 0)
+tot.arima.seas.pred
+tot.auto.arima.pred
+
+
+
+
+# e. Apply the accuracy() function to compare performance measures of the following 
+# forecasting models for the entire data set. Present the accuracy measures in your report, compare them, and identify, using MAPE 
+# and RMSE, the best model to use for forecasting Walmart’s revenue in Q1-Q4 of 2024-2025 
+# (1) regression model with linear trend and seasonality; 
+tot.lin.season <- tslm(revenue.ts ~ trend + season)
+tot.lin.season.pred <- forecast(tot.lin.season, h = 8, level = 0)
+# (2) two-level model (with AR(1) model for residuals);
+# (3) ARIMA(1,1,1)(1,1,1) model; 
+# (4) auto ARIMA model;
+# (5) seasonal naïve forecast for the entire data set.
+linear_season_MAPE <- round(accuracy(tot.lin.season.pred$fitted, revenue.ts)[, "MAPE"], 3)
+linear_season_RMSE <- round(accuracy(tot.lin.season.pred$fitted, revenue.ts)[, "RMSE"], 3)
+
+linear_season_ar1_MAPE <- round(accuracy(lin.season.pred$fitted + residual.ar1.pred$fitted, revenue.ts)[, "MAPE"], 3)
+linear_season_ar1_RMSE <- round(accuracy(lin.season.pred$fitted + residual.ar1.pred$fitted, revenue.ts)[, "RMSE"], 3)
+
+arima_seas_MAPE <- round(accuracy(tot.arima.seas.pred$fitted, revenue.ts)[, "MAPE"], 3)
+arima_seas_RMSE <- round(accuracy(tot.arima.seas.pred$fitted, revenue.ts)[, "RMSE"], 3)
+auto_arima_MAPE <- round(accuracy(tot.auto.arima.pred$fitted, revenue.ts)[, "MAPE"], 3)
+auto_arima_RMSE <- round(accuracy(tot.auto.arima.pred$fitted, revenue.ts)[, "RMSE"], 3)
+snaive_MAPE <- round(accuracy((snaive(revenue.ts))$fitted, revenue.ts)[, "MAPE"], 3)
+snaive_RMSE <- round(accuracy((snaive(revenue.ts))$fitted, revenue.ts)[, "RMSE"], 3)
+
+results_df <- data.frame(
+  Model = c("Reg Linear Seasonal", "Two-level model (with AR(1) model for residuals)", "ARIMA(1,1,1)(1,1,1) model", "Auto ARIMA", "Seasonal Naive"),
+  MAPE = c(linear_season_MAPE, linear_season_ar1_MAPE, arima_seas_MAPE, auto_arima_MAPE, snaive_MAPE),
+  RMSE = c(linear_season_RMSE, linear_season_ar1_RMSE, arima_seas_RMSE, auto_arima_RMSE, snaive_RMSE)
+)
+
+print(results_df)
+
+
+

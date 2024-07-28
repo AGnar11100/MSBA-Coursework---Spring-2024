@@ -1,0 +1,15 @@
+4/16
+Regression models for: 
+trend component - linear, exponentil, polynomial etc
+seasonal component - additive or  multiplicative 
+Fitting trend + seasonal components
+Capturing special events
+capturing period-to-period - autoregressive
+And are useful for: visualization and multi-period forecasting
+Regression is good for long periods unlike models that use exponential smoothing 
+
+For multiplicative series, exponential trend is advised 
+
+Most common way to capture seasonality in a regression model is to create a new categorical variable that describes season for each month
+for monthly data. So apply binary variable.
+When binary variables are present, the model cannot be considered to be linear and is considered non-linear. 

@@ -1,0 +1,45 @@
+Chapter 1
+
+Process
+	Define Goal
+	Get Data
+	Explor and visualize
+	Pre process data 
+	Partition Series
+	Apply forecasting method
+	Eval and Compare performance 
+	Implement System
+
+Descriptive vs. Predictive
+
+	Descriptive - determine components in terms for seasonal patterns, trends, and relation to external factors.
+		Decision Making and Policy formation
+		Retrospective
+	Predictive - forecast the future values in the series
+		Prospective
+
+	Different methods for different goals.
+
+	Revenue Management - using demand data to determine pricing
+
+Firecast Horizon and Forecast Updating
+	
+	Hard to forecast the future when there isnt sufficient past data.
+	Refreshing forecasts based on new data is call roll-forward forecasting.
+
+Forecast Use
+	Questions to ask about problem/stakeholders
+		Are forecast numerical or binary?
+		Does over-predicting or under-predicting cost more or less?
+		Will forecasts be used directly or will they be adjusted in some way before use?
+		Which group of ppl with the forecasts be presented to?
+	
+Level of Automation
+	Important questions
+		How many series will be forecasted?
+		Is the forecasting ongoing process or a one time event?
+		Data and software available during forecasting?
+		What forecasting expertise will be available at the organization during the forecasting period?
+
+
+	

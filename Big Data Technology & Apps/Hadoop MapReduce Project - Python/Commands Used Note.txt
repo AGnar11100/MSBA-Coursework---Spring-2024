@@ -1,0 +1,50 @@
+134.154.190.204
+Part I: Develop a Python application to retrieve Year and Temperature from original NCDC records and then write the 
+Year and Temperature data into a text file. 
+
+# put data into correct directory
+hdfs dfs -copyFromLocal CourseProjectData/ hdfs://msba-hadoop-name:9000/user/student29/
+# run mapper 
+spark-submit NcdcRecordMapper.py CourseProjectData/*.gz
+# run reducer
+spark-submit --master local[*] NcdcRecordReducer.py
+
+
+
+
+
+Part II: load the text file into Pig and get the highest and lowest temperatures for each year.
+temperature_data = LOAD 'hdfs://msba-hadoop-name:9000/user/student29/output/aggregated_temperature/part-00000' USING PigStorage(',') AS (year:int, temperature:int);
+grouped_data = GROUP temperature_data BY year;
+temperature_stats = FOREACH grouped_data { max_temp = MAX(temperature_data.temperature); min_temp = MIN(temperature_data.temperature); GENERATE group AS year, max_temp AS max_temperature, min_temp AS min_temperature; }
+STORE temperature_stats INTO 'output/temperature_stats' USING PigStorage(',');
+DUMP temperature_stats;
+
+
+Part III: load the text file into Hive and get the average temperature for each year.
+hdfs dfs -mkdir /home/student29/hivedb
+then 
+hdfs dfs -copyFromLocal sample.txt /home/student29/hivedb/
+then
+ls -l | grep meta
+then
+mv metastore_db metastore_db.old
+then 
+schematool -dbType derby -initSchema
+then 
+hive
+then 
+set hive.metastore.warehouse.dir;
+
+CREATE TABLE IF NOT EXISTS temperature_data (year INT, temperature INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' STORED AS TEXTFILE;
+
+LOAD DATA INPATH 'hdfs://msba-hadoop-name:9000/user/student29/output/aggregated_temperature/part-00000' INTO TABLE temperature_data;
+
+SELECT year, AVG(temperature) AS avg_temperature FROM temperature_data WHERE year IS NOT NULL AND temperature IS NOT NULL GROUP BY year;
+Deliverables:
+	1) Python files (mapper and reducer): DONE EZ
+	2) the commands for executing the Python application in Hadoop: DONE EZ
+	3) the text file including Year and Temperature data created by you: write both output files into a text file
+	4) the screenshot of the text file being created: EZ
+	5) the screenshot of the final Pig output showing the year and the highest and lowest temperatures: confirm output
+	6) the screenshot of the final Hive output showing the year and average temperature: confirm output

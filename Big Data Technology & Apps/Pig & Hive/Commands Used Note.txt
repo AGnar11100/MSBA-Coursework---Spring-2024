@@ -1,0 +1,111 @@
+134.154.190.204
+1. Work the five examples on pages 384 and 385, that is, from the title “Schemas” to the
+subtitle “Validation and nulls.” Print out a screenshot or a couple of screenshots for the
+results of these five examples in CSUEB Hadoop.
+# create directory in HDFS
+hdfs dfs -mkdir /home/student29/input/
+hdfs dfs -mkdir /home/student29/input/ncdc/
+hdfs dfs -mkdir /home/student29/input/ncdc/micro-tab
+# move sample_corrupt.txt into directory created above
+hdfs dfs -copyFromLocal <file> /home/student29/input/ncdc/micro-tab/
+
+1.1
+# create records by loading in text data then view the schema of a relation using DESCRIBE
+records = LOAD '/input/ncdc/micro-tab/sample.txt' AS (year:int, temperature:int, quality:int);
+DESCRIBE records;
+
+1.2
+# create records by loading in text data then view the schema and omit type declarations completely
+records = LOAD 'input/ncdc/micro-tab/sample.txt' AS (year, temperature, quality);
+DESCRIBE records;
+
+1.3
+records = LOAD 'input/ncdc/micro-tab/sample.txt' AS (year, temperature:int, quality:int);
+DESCRIBE records;
+
+1.4
+records = LOAD 'input/ncdc/micro-tab/sample.txt';
+DESCRIBE records;
+
+1.5
+records = LOAD 'hdfs://msba-hadoop-name:9000/home/student29/input/ncdc/micro-tab/sample.txt';
+projected_records = FOREACH records GENERATE $0, $1, $2;
+DUMP projected_records;
+DESCRIBE projected_records;
+
+
+2. Work “A Load UDF” example on pages 394. Type out all the commands in each
+step of the process and print out a screenshot of the final results in CSUEB Hadoop.
+Note. 1) This example also has Range.java, which is located in the same folder as
+CutLoadFunc.java. 2) Need pig-0.11.0.jar and commons-logging-1.2.jar for compilation. The
+two jars are available in Useful Jars folder on Canvas.
+
+javac -classpath /home/student29/hadoop-common-2.6.1.jar:/home/student29/hadoop-mapreduce-client-core-2.6.1.jar:/home/student29/commons-cli-2.0.jar:/home/student29/commons-logging-1.2.jar:/home/student29/pig-0.11.0.jar -d . Range.java CutLoadFunc.java
+then
+jar -cvf /home/student29/com/hadoopbook/pig/CutLoadFunc.jar /home/student29/com/hadoopbook/pig/Range.class /home/student29/com/hadoopbook/pig/CutLoadFunc.class
+then
+pig
+then
+REGISTER /home/student29/com/hadoopbook/pig/CutLoadFunc.jar;
+then
+record = LOAD 'sample.txt' USING com.hadoopbook.pig.CutLoadFunc('16-19,88-92,93-93') AS (year:int, temperature:int, quality:int);
+then 
+DUMP record;
+
+
+
+3. Work the four examples on pages 414, that is, from the title “An Example” to the
+title “Running Hive.” Type out all the commands in each step of the process and print out a
+screenshot of the final results in CSUEB Hadoop.
+
+hdfs dfs -mkdir /home/student29/hivedb
+then 
+hdfs dfs -copyFromLocal sample.txt /home/student29/hivedb/
+then
+ls -l | grep meta
+then
+mv metastore_db metastore_db.old
+then 
+schematool -dbType derby -initSchema
+then 
+hive
+then 
+set hive.metastore.warehouse.dir;
+then 
+CREATE TABLE records (year STRING, temperature INT, quality INT) ROW  FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+then
+LOAD DATA LOCAL INPATH 'sample.txt' OVERWRITE INTO TABLE records;
+then 
+SELECT year, MAX(temperature) FROM records WHERE temperature !=  9999 AND (quality = 0 OR quality = 1 OR quality = 4 OR quality = 5 OR quality  = 9) GROUP BY year;
+
+
+
+
+
+
+4. Work the only example on page 444. The codes to create table records2 are as follows:
+
+DROP TABLE IF exists records2;
+CREATE TABLE records2 (station STRING, year STRING, temperature INT, quality INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t';
+LOAD DATA LOCAL INPATH '/your/path/to /sample2.txt'
+OVERWRITE INTO TABLE records2;
+
+The sample2.txt can be found in Hadoop-Book-Master/input/ncdc/micro-tab/sample2.txt.
+Type out all the commands in each step of the process and print out a screenshot of the final
+results in CSUEB Hadoop.
+
+
+CREATE TABLE records2 (staBon STRING, year STRING, temperature INT, quality  INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+then
+LOAD DATA LOCAL INPATH '/home/student29/sample2.txt' OVERWRITE INTO TABLE records2;
+then
+ADD FILE /home/student29/is_good_quality.py;
+then
+FROM records2 SELECT TRANSFORM(year, temperature, quality) USING 'is_good_quality.py' AS year, temperature;
+then
+FROM (FROM records2 MAP year, temperature, quality USING 'is_good_quality.py' AS year, temperature) map_output REDUCE year, temperature USING 'max_temperature_reduce.py' AS year, temperature;
+
+
+

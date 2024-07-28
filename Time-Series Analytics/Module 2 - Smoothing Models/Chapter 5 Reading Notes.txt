@@ -1,0 +1,72 @@
+Smoothing is based on averaging values over multiple periods in order to reduce the noise and uncover patterns.
+Such methods are a family of forecasting methods that are data driven in the sense that they estimate time series components directly
+from the data without a predetermined structure. 
+
+Moving Average
+	Averaging values across a window of consecutive periods therefore generating a series of averages.
+	A moving average with window width w means averaging across each set of w consecutive values where w is determined by the user. 
+	
+	The main different between these two is the placement of the averaging windown over the time series.
+	Centered (w=5) -> t-2 t-1 t t+1 t+2
+	Trailing (w=5) -> t-4 t-3 t-2 t-1 t
+
+	Centered Moving Average for Data Visualization
+	Trailing Moving Average, Weight Moving Average, and Simple Exponential Smoothing for short term forecasting. (day, month, etc.)
+	Trailing Moving Average and Simple Exponential Smoothing can also be used to forecast residuals.
+	Advanced Smoothing Methods (Holts-Winters) for multi-period forecasting
+
+	How to choose window width w - Experiment based off performance/accuracy
+		For Centered Windows, wider windows will expose more global trends while narrower will reveal local so examining
+		several windows will be useful for exploring trends of different nature. 
+	
+		For Trailing windows, the choice should incorperate some domain knowledge in terms of relevance of past observations and
+		how fast the series changes. Emperical predictive evaluation can also be done by experimenting with different values of w
+		and comparing performance. 
+		Note: A trailing moving average with w=1 generates naive forecasts, while w=n means using the average of the series over
+		the entire training period.
+
+Applying Trailing Moving Average in Forecasting - For Noise & Level 
+	Should be used for forecasting in time series that lacks seasonality and trend
+
+	In order to apply training MA in data with trend and/or seasonality, two level forecasting, a combination of two forecasting models 
+	may be applied:
+		
+	Method that takes care of trend and seasonality
+	Level 1 - Regression model with trend and/or seasonality. 		
+	Level 2 - Training MA to forecast regresssion model's residuals 
+	
+	Total forecast used in predictions in a combination (sum) of regression model and training MA forecasts.
+	
+	Use residuals to make a refined forecast. 
+		Calculate MA on residuals with window size
+		
+
+
+Differences - removing trend and/or a seasonal pattern from a series 
+	To remove trends and seasonal patterns we can difference the original time series and obtain a differenced series that lack such.
+	Lag-1 differencing results in a differenced series that measures the changes from one period to the next. Taking the difference btwn
+	every two consecutive values in the series.
+	Lag-7 differencing means subtracting from each value, the value on the same day in the previous week.
+	Generally speaking Lag-k means subtraining the values from k periods back.
+	
+	Does not assume that the trend is global, meaning the trend shape is fixed throughout the entire period.
+	
+	For quadratic and exponential trends, another round of lag-1 differencing must be applied to remove the trend.
+	For removing seasonal patterns with M seasons, we difference at lag M. Ex: lag-7 to remove seasonality from day-of-the-week and lag-12 
+	to remove monthly seasonality.
+
+	When both trend and seasonality exist, difference twice to the series to detrend and deseasonalize. 
+
+	Differencing is often used as a preprocessing step before applying a forecasting method model to the series. When the forecasting
+	method is a data driven AI algo like NN, differencing appears to produce inferior results. 
+
+
+	
+Case 1
+	Part 1, first and second class material
+	Part 2 & 3, 3/16 class
+		trailing ma only
+		
+	Part 4, class after break 
+
+	

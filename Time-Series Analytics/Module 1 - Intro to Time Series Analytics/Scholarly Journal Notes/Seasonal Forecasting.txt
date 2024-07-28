@@ -1,0 +1,65 @@
+The questions that this research is going to answer are: 
+(a) How well neural network methods will perform for seasonal items forecasting? 
+(b) Which of these traditional and innovative time-series forecasting methods will obtain the most accurate results?
+
+Classical Time Series Methods
+Moving Average (MA) is one of the simplest prediction techniques for making projections about time-series without a noticeable 
+seasonal pattern. 
+
+Multivariate ARIMA to perform demand forecasting on perishable goods. 
+ARIMA + NN for Network traffic forecasting
+ARIMA for cyrtocurrency price forecasting based on the impact of social media. 
+
+Seasonal ARIMA (SARIMA) for forecasting tourism demand and predicting vehicular traffic flow
+But is limited in prediction because its linear for and inability to detect nonlinear and highly volatile patterns.
+Seasonal Support Vector Regression (SSVR) ends up being superior in this problem compared to SARIMA. 
+
+Exponential Smoothing Methods
+	Triple exponential smoothing/Holt-Winter Smoothing
+	Seasonal exponetial smoothing
+Other Advanced Methods
+	Greedy Aggregation Decomposition (GAD) overcomes limited space in retailer invetory related to their Stock Keeping Units (SKU) daily demands.
+
+Prophet Method and Artificial Neural Networks time-series forecasting methods
+	Prophet method is new and not been investigating thoroughly
+	Prophet yields similar results as traditional forecasting methods 
+	When forecasting hospital discharge volume prediction, the results were better with Prophet than SARIMA
+	ARIMA + Prophet for forecasting Covid disease in Indonesia
+
+	Aggregated time-series are defined as large collections of time-series that are combined with different techniques, and
+	they are usually more accurate than disaggregated forecasts.
+	
+	ANNs outperformed HW exponential smoothing and Box Jenkins techniques. 
+	ANNs + Regression Trees for forecasting energy cost of public buildings. 
+	ANNs for sales forecasting since theyre flexible for detecting patterns in data
+	Multi-layer Perceptrons (MLP) are a universal approximator function, feedforward NN method that has one layer or more of hidden units
+	Deseasonalizing and detrending can prevent high variable in results and can improve accuracy. 
+	Seasonal ANNs (SANN) detemines # of neurons based on seasonal fluctations in the pattern.
+	ANN using ARIMA is good
+
+Deep Learning
+	Multi-layer Perceptrons
+	XGBoost > Deep Learning > Logistic Regression
+	RNNs (LSTM) for detecting anomalies in time-series
+	CNNs can detect changes in trends
+
+
+Case Study Information
+
+Each of time-series can be described by important components like trend, cyclicality, and seasonality. 
+Trend refers to the overall upward or downward movement. 
+Cyclicality is when a repeating pattern is available, but there is no fixed period. 
+Seasonality can be defined as periodic fluctuations in the time-series.
+
+A time series is called stationary if its statistical features (e.g., mean, standard deviation) continue steadily over time, and this is highly 
+important because if a time-series is stationary, there is a high probability that it will repeat its behavior in the future, and therefore 
+it will be easier to forecast. 
+
+Dickey-Fuller test and rolling statistics plot can check for stationarity. 
+The objective of Augmented Dickey Fuller (ADF) test is to decide that the time-series is stationary or non-stationary by checking the
+presence of unit root in a time-series. This method observes the difference between the value level and the mean. If it was higher 
+than the mean, the next movement will be downward.
+The null hypothesis states that the time-series in non-stationary
+(𝜆 = 0). If this hypothesis is rejected, it shows that the next movement
+(Δ𝑦(𝑡)) is not just a random value, and it depends on the current level
+𝑦(𝑡 − 1). Thus, stationary. 

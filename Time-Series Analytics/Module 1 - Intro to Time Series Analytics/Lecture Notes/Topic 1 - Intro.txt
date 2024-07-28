@@ -1,0 +1,94 @@
+Time Series Analytics is an important part of predictive analytics dealing with making predictions by applying time
+series forecasting.
+
+Time Series is a sequence of data points taken in timely order.
+	Uninterrupted set of successive data observations that have order in time in equally space intervals
+
+Contrary to time series, cross-sectional data record are collected at the same point of time or without regard
+to difference in time.  
+
+Why Time Series Forecasting in Business?
+Forecasting is a necessary tool to reduce the uncertainty (risk) in decision making. Better decisions come from better
+forecasts. Forecasting serves as a starting point of major decisions in finance, marking, operations, purchasing,and
+other functions.
+
+Decisions Require Time Series Forecasting
+	Predicting demands of new and existing products in the following time period.
+	Projecting revenues, profits, expenses, and other financial results into the future. 
+	Estimating the rate of quality improvement over a period of time
+	Predicting stock prices in the next day, month or year
+	Predicting inventory requirements in the next year
+	Forecasting number of air passengers in the future
+	
+Notations
+	t - time period index 
+	yt(Yt) - value of series at time period t
+	F_t+k - forecast for time period t+k, k is the number of steps forward
+	e_t = error = yt-Ft
+
+Forecasting Equals Science Plus Art
+	Sciences implies that the body of the forecasting knowledge lies on the solid ground of quantitative forecasting
+	methods and their correct utilization for various business situations.
+
+	Art represents a combo of a decision makers experience, logic, and intuition to supplement the forecasting of
+	quantitative analysis. Management abilities should be involved in the forecasting process.
+Both are essentials, all managers are forecasters, and better forecasting is most critical these days. 
+
+
+Principles of Time Series Forecasting
+	Main assumption: past pattern repeats itself into the future
+	Forecasts are rarely perfect: dont expect exact equality to the actual data
+	Science and Art try to minimize but do not eliminate errors
+Forecast for a group of products (aggregated forecasting) is usually more accurate than forecasts for an individual item.
+Forecasts for shorter periods of time tend to be more accurate. 
+
+High Level Forecasting Process
+	Define Goal
+	Get data
+	Exokire & Visualize series
+	Pre-process data
+	Partition Series 
+	Apply forecasting method(s)
+	Evaluate & Compare Performance
+	Implement Forecasts/System
+
+
+Step 1: Define Goal
+Discriptive or Predictive
+	Descriptive
+		Descriptive stats
+		Correlation of successive data points - autocoreelation
+		Patterns: trends, seasonality, etc
+		Visualization
+		Relationships to external factors
+	Predictive
+		Forecast the future time series points for which the actual time series data is not available. 
+
+Forecast Horizon
+	How far into the future? (k in F_t+k)
+	Long term vs. short term forecasting?
+	Rolling forward or at single time point?
+	How frequently the model should be examined?
+
+Forecast Usage
+	Who are stakeholders and how many?
+	Should forecasts be numerical or binary? (event/non-event)
+	Will forecast undergo adjustments?
+
+Forecast expertise and automation
+	In house forecasting or consultants?
+	How man series and how often will be forecasted?
+	One-time forecasting or ongoing tasks?
+	Which data and software will be available for forecasting?
+	Implications:
+		How much data is needed
+		Choice of forecasting methods
+		Forecasting software used?
+		Expected levels of accuracy?
+		Model Deployment
+
+Forecasting Software
+	Excel
+	General stats with forecasting modules: JMP, SPSS, Minitab, Stata
+	Specialized forecasting packages for business: Forecast Pro, Amazon Forecast
+	General languages: R, Python, C++

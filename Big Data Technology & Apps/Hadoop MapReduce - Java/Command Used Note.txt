@@ -1,0 +1,14 @@
+134.154.190.204
+#1
+1. javac -classpath /home/student29/hadoop-common-2.6.1.jar:/home/student29/hadoop-mapreduce-client-core-2.6.1.jar:/home/student29/commons-cli-2.0.jar -d . WholeFileInputFormat.java WholeFileRecordReader.java SmallFilesToSequenceFileConverter.java JobBuilder.java
+2. jar -cvf hadoop-example.jar WholeFile*.class SmallFilesToSequenceFileConverter*.class JobBuilder.class
+3. hdfs dfs -copyFromLocal hadoop-example.jar /home/student29/ 
+3b. hdfs dfs -copyFromLocal smallfiles /home/student29/
+4. hadoop jar /home/student29/hadoop-example.jar SmallFilesToSequenceFileConverter -D mapred.reduce.tasks=2 /home/student29/smallfiles /home/student29/output11
+5. hadoop fs -text /home/student29/output11/part-r-00000 and hadoop fs -text /home/student29/output11/part-r-00001
+
+#2
+1. javac -classpath /home/student29/hadoop-common-2.6.1.jar:/home/student29/hadoop-mapreduce-client-core-2.6.1.jar:/home/student29/commons-cli-2.0.jar -d . MaxTemperatureWithCounters.java MaxTemperatureMapper.java MaxTemperatureReducer.java NcdcRecordParser.java JobBuilder.java
+2. jar -cvf max-temp-job.jar MaxTemperatureWithCounters*.class MaxTemperatureMapper.class MaxTemperatureReducer.class NcdcRecordParser.class JobBuilder.class
+3. hdfs dfs -copyFromLocal 1930/ /home/student29/
+4. hadoop jar max-temp-job.jar MaxTemperatureWithCounters /home/student29/1930 /home/student29/output-counters
